@@ -11,17 +11,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="24sp"
-        android:text="Hello World!" />
+        android:text="New Items!" />
 
-    <Button
-        android:id="@+id/btn_new_items"
-        android:text="New Items"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/btn_hot_items"
-        android:text="Hot Items"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <ListView
+            android:id="@+id/lv_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+    </LinearLayout>
 </LinearLayout>
