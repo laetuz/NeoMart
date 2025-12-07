@@ -1,6 +1,7 @@
 package id.neotica.neomart;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,7 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import id.neotica.neomart.data.DummyRepository;
+import id.neotica.neomart.model.ItemDetail;
 import id.neotica.neomart.model.ItemModel;
 
 public class NewItemsActivity extends Activity {
@@ -32,19 +36,36 @@ public class NewItemsActivity extends Activity {
         });
 
         String[] data = {"item", "item"};
-        ArrayList<ItemModel> dataList = new ArrayList<>();
-        dataList.add(new ItemModel("101", "Galaxy S2", ""));
-        dataList.add(new ItemModel("102", "HTC Nexus", ""));
-        dataList.add(new ItemModel("103", "Xperia Explorer", ""));
 
-        ArrayAdapter<ItemModel> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
+        List<ItemDetail> itemDummy = DummyRepository.getItemList();
+
+        ArrayList<ItemModel> dataList = new ArrayList<>();
+
+        for (ItemDetail items: itemDummy) {
+            dataList.add(
+                    new ItemModel(
+                            items.getId(),
+                            items.getName(),
+                            items.getImageUrl()
+                    )
+            );
+        }
+
+        final ArrayAdapter<ItemModel> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
 
         mainList.setAdapter(adapter);
 
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // set the logic here later :p
+                ItemModel currentItem = adapter.getItem(position);
+
+                if (currentItem != null) {
+                    Intent intent = new Intent(NewItemsActivity.this, ItemDetailActivity.class);
+                    intent.putExtra("ITEM_ID", currentItem.getId());
+                    startActivity(intent);
+                }
             }
         });
     }

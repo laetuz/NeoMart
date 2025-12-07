@@ -11,6 +11,19 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="24sp"
-        android:text="Hot Items!" />
+        android:text="New Items!" />
 
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="desc!" />
+
+    <TextView
+        android:id="@+id/tv_created_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="desc!" />
 </LinearLayout>
