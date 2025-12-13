@@ -18,7 +18,9 @@ public class DummyRepository {
                         "101",
                         "Samsung Galaxy S2",
                         "From samsung",
-                        "",
+//                        "https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s-ii-real-ofic-1.jpg",
+                        "http://192.168.0.106:8080/projects/stacks/java-icon.svg",
+                        200L,
                         "2023-10-01"
                 )
         );
@@ -26,9 +28,11 @@ public class DummyRepository {
         items.add(
                 new ItemDetail(
                         "102",
-                        "HTC G2",
+                        "HTC Magic",
                         "From HTC",
-                        "",
+//                        "https://fdn2.gsmarena.com/vv/pics/htc/htc-magic-00.jpg",
+                        "http://192.168.0.106:8080/projects/neoverse-logo.png",
+                        250L,
                         "2023-10-02"
                 )
         );
@@ -36,9 +40,10 @@ public class DummyRepository {
         items.add(
                 new ItemDetail(
                         "103",
-                        "Sony Xperia Explorer",
-                        "From xperia",
-                        "",
+                        "Sony Xperia P",
+                        "From sony",
+                        "https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-p-silver.jpg",
+                        300L,
                         "2023-10-03"
                 )
         );

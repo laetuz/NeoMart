@@ -46,7 +46,8 @@ public class NewItemsActivity extends Activity {
                     new ItemModel(
                             items.getId(),
                             items.getName(),
-                            items.getImageUrl()
+                            items.getImageUrl(),
+                            items.getCreatedAt()
                     )
             );
         }
