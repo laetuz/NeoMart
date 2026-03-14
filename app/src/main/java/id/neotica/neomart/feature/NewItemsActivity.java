@@ -1,4 +1,4 @@
-package id.neotica.neomart;
+package id.neotica.neomart.feature;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import id.neotica.neomart.R;
 import id.neotica.neomart.data.DummyRepository;
+import id.neotica.neomart.feature.detail.ItemDetailActivity;
 import id.neotica.neomart.model.ItemDetail;
 import id.neotica.neomart.model.ItemModel;
 

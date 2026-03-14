@@ -14,9 +14,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".NewItemsActivity"/>
-        <activity android:name=".HotItemsActivity"/>
-        <activity android:name=".ItemDetailActivity"/>
+        <activity android:name=".feature.NewItemsActivity"/>
+        <activity android:name=".feature.HotItemsActivity"/>
+        <activity android:name=".feature.detail.ItemDetailActivity"/>
+        <activity android:name=".feature.CheckoutActivity"/>
 
     </application>
 

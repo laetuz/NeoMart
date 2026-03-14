@@ -1,9 +1,11 @@
-package id.neotica.neomart;
+package id.neotica.neomart.feature;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import id.neotica.neomart.R;
 
 public class HotItemsActivity extends Activity {
 

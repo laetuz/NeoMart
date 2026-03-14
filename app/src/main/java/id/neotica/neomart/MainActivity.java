@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import id.neotica.neomart.feature.NewItemsActivity;
 
 public class MainActivity extends Activity {
 
@@ -35,9 +38,9 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, HotItemsActivity.class);
-
-                startActivity(intent);
+                Toast.makeText(MainActivity.this, "Coming soon!", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(MainActivity.this, HotItemsActivity.class);
+//                startActivity(intent);
             }
         });
     }
