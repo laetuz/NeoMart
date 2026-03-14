@@ -1,9 +1,7 @@
 package id.neotica.neomart.feature;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,16 +13,13 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import id.neotica.neomart.R;
 import id.neotica.neomart.feature.detail.ItemDetailActivity;
 import id.neotica.neomart.model.ItemModel;
+import id.neotica.neomart.network.ApiCallback;
+import id.neotica.neomart.network.ApiTask;
 
 public class NewItemsActivity extends Activity {
 
@@ -61,90 +56,43 @@ public class NewItemsActivity extends Activity {
             }
         });
 
-        new FetchProductsTask().execute(API_URL);
+        ApiCallback productCallback = new ApiCallback() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    dataList.clear();
 
-    }
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject obj = jsonArray.getJSONObject(i);
 
-    private class FetchProductsTask extends AsyncTask<String, Void, String> {
-        private ProgressDialog dialog;
+                        String rawImgPath = obj.optString("image_url", "");
+                        String fullImageUrl = (rawImgPath == null || rawImgPath.length() == 0) ? "" : IMG_BASE_URL + rawImgPath;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            try {
-                dialog = ProgressDialog.show(NewItemsActivity.this, "", "Loading products...", true);
-            } catch (Throwable t) {
-                // Ignore window crashes
-            }
-        }
+                        ItemModel item = new ItemModel(
+                                obj.getString("id"),
+                                obj.getString("name"),
+                                obj.getDouble("price"),
+                                obj.getInt("stock"),
+                                obj.optString("description", "null"),
+                                fullImageUrl
+                        );
 
-        @Override
-        protected String doInBackground(String... urls) {
-            StringBuilder response = new StringBuilder();
-            try {
-                URL url = new URL(urls[0]);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(5000);
-                conn.setReadTimeout(5000);
+                        dataList.add(item);
+                    }
 
-                InputStream in = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
+                    adapter.notifyDataSetChanged();
+                } catch (Throwable e) {
+                    Toast.makeText(NewItemsActivity.this, "Error parsing Json", Toast.LENGTH_SHORT).show();
                 }
-                reader.close();
-                conn.disconnect();
-                return response.toString();
-            } catch (Throwable e) {
-                return "Network error: " + e.toString();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String jsonResponse) {
-            super.onPostExecute(jsonResponse);
-            try {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            } catch (Throwable e) {
-
             }
 
-            if (jsonResponse == null) {
-                Toast.makeText(NewItemsActivity.this, "Failed to connect to server.", Toast.LENGTH_SHORT).show();
-                return;
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(NewItemsActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
+        };
 
-            try {
-                JSONArray jsonArray = new JSONArray(jsonResponse);
-                dataList.clear();
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject obj = jsonArray.getJSONObject(i);
-
-                    String rawImgPath = obj.optString("image_url", "");
-                    String fullImageUrl = (rawImgPath == null || rawImgPath.length() == 0) ? "" : IMG_BASE_URL + rawImgPath;
-
-                    ItemModel item = new ItemModel(
-                            obj.getString("id"),
-                            obj.getString("name"),
-                            obj.getDouble("price"),
-                            obj.getInt("stock"),
-                            obj.optString("description", "null"),
-                            fullImageUrl
-                    );
-
-                    dataList.add(item);
-                }
-
-                adapter.notifyDataSetChanged();
-            } catch (Throwable e) {
-                e.printStackTrace();
-                Toast.makeText(NewItemsActivity.this, "Error parsing server data", Toast.LENGTH_SHORT).show();
-            }
-        }
+        new ApiTask(this, "GET", API_URL, null, "Loading...", productCallback).execute();
     }
 }
