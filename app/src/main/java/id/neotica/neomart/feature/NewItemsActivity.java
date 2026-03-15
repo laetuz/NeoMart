@@ -20,15 +20,13 @@ import id.neotica.neomart.feature.detail.ItemDetailActivity;
 import id.neotica.neomart.model.ItemModel;
 import id.neotica.neomart.network.ApiCallback;
 import id.neotica.neomart.network.ApiTask;
+import id.neotica.neomart.utils.Constants;
 
 public class NewItemsActivity extends Activity {
 
     private ListView mainList;
     private ArrayAdapter<ItemModel> adapter;
     private ArrayList<ItemModel> dataList;
-
-    private final String API_URL = "http://dev.neotica.id/neomart/products";
-    private final String IMG_BASE_URL = "http://dev.neotica.id/neomart";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +65,7 @@ public class NewItemsActivity extends Activity {
                         JSONObject obj = jsonArray.getJSONObject(i);
 
                         String rawImgPath = obj.optString("image_url", "");
-                        String fullImageUrl = (rawImgPath == null || rawImgPath.length() == 0) ? "" : IMG_BASE_URL + rawImgPath;
+                        String fullImageUrl = (rawImgPath == null || rawImgPath.length() == 0) ? "" : Constants.IMG_BASE_URL + rawImgPath;
 
                         ItemModel item = new ItemModel(
                                 obj.getString("id"),
@@ -93,6 +91,6 @@ public class NewItemsActivity extends Activity {
             }
         };
 
-        new ApiTask(this, "GET", API_URL, null, "Loading...", productCallback).execute();
+        new ApiTask(this, "GET", Constants.BASE_URL, null, "Loading...", productCallback).execute();
     }
 }
