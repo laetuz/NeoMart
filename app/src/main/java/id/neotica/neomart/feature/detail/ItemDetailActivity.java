@@ -72,11 +72,13 @@ public class ItemDetailActivity extends Activity {
                     String desc = obj.getString("description");
                     double price = obj.getDouble("price");
                     String rawImgPath = obj.optString("image_url", "");
+                    String createdAt = obj.getString("created_at");
 
                     String fullImageUrl = (rawImgPath == null || rawImgPath.length() == 0) ? "" : Constants.IMG_BASE_URL + rawImgPath;
                     tvTitle.setText(name);
                     tvDesc.setText(desc);
                     tvPrice.setText("Price: Rp " + price);
+                    tvCreatedAt.setText(createdAt);
 
                     if (fullImageUrl.length() > 0) {
                         imageLoader.displayImage(fullImageUrl, ivItem);
