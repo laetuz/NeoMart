@@ -18,9 +18,17 @@ import id.neotica.neomart.feature.CheckoutActivity;
 import id.neotica.neomart.R;
 import id.neotica.neomart.network.ApiCallback;
 import id.neotica.neomart.network.ApiTask;
+import id.neotica.neomart.network.HttpMethod;
 import id.neotica.neomart.utils.Constants;
 
+import static id.neotica.neomart.feature.NewItemsActivity.ITEM_ID_PARAMS;
+
 public class ItemDetailActivity extends Activity {
+    private static final String ITEM_NAME = "name";
+    private static final String ITEM_DESCRIPTION = "description";
+    private static final String ITEM_PRICE = "price";
+    private static final String ITEM_IMAGE_URL = "image_url";
+    private static final String ITEM_CREATED_AT = "created_at";
 
     private TextView tvTitle, tvDesc, tvPrice, tvCreatedAt;
     private ImageView ivItem;
@@ -51,7 +59,7 @@ public class ItemDetailActivity extends Activity {
 
         imageLoader = ImageLoader.getInstance();
 
-        currentItemId = getIntent().getStringExtra("ITEM_ID");
+        currentItemId = getIntent().getStringExtra(ITEM_ID_PARAMS);
 
         if (currentItemId == null || currentItemId.length() == 0) {
             Toast.makeText(this, "Error: No Item ID provided", Toast.LENGTH_SHORT).show();
@@ -68,11 +76,11 @@ public class ItemDetailActivity extends Activity {
                 try {
                     JSONObject obj = new JSONObject(response);
 
-                    String name = obj.getString("name");
-                    String desc = obj.getString("description");
-                    double price = obj.getDouble("price");
-                    String rawImgPath = obj.optString("image_url", "");
-                    String createdAt = obj.getString("created_at");
+                    String name = obj.getString(ITEM_NAME);
+                    String desc = obj.getString(ITEM_DESCRIPTION);
+                    double price = obj.getDouble(ITEM_PRICE);
+                    String rawImgPath = obj.optString(ITEM_IMAGE_URL, "");
+                    String createdAt = obj.getString(ITEM_CREATED_AT);
 
                     String fullImageUrl = (rawImgPath == null || rawImgPath.length() == 0) ? "" : Constants.IMG_BASE_URL + rawImgPath;
                     tvTitle.setText(name);
@@ -103,6 +111,6 @@ public class ItemDetailActivity extends Activity {
             }
         };
 
-        new ApiTask(this, "GET", fullApiUrl, null, "Loading details...", detailCallback).execute();
+        new ApiTask(this, HttpMethod.GET, fullApiUrl, null, "Loading details...", detailCallback).execute();
     }
 }

@@ -19,13 +19,13 @@ public class ApiTask extends AsyncTask<Void, Void, String> {
 
     private Context context;
     private String urlString;
-    private String method; // "GET", "POST", "PUT", "DELETE"
+    private HttpMethod method; // "GET", "POST", "PUT", "DELETE"
     private String jsonPayload; // For POST/PUT data
     private ApiCallback callback;
     private ProgressDialog dialog;
     private String loadingMessage;
 
-    public ApiTask(Context context, String method, String urlString, String jsonPayload, String loadingMessage, ApiCallback callback) {
+    public ApiTask(Context context, HttpMethod method, String urlString, String jsonPayload, String loadingMessage, ApiCallback callback) {
         this.context = context;
         this.method = method;
         this.urlString = urlString;
@@ -50,12 +50,12 @@ public class ApiTask extends AsyncTask<Void, Void, String> {
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
+            conn.setRequestMethod(method.name());
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
 
             // If we are sending data (POST or PUT), we need to write to the OutputStream
-            if (("POST".equals(method) || "PUT".equals(method)) && jsonPayload != null) {
+            if ((method == HttpMethod.POST || method == HttpMethod.PUT) && jsonPayload != null) {
                 conn.setDoOutput(true);
                 conn.setRequestProperty("Content-Type", "application/json");
                 OutputStream os = conn.getOutputStream();
